@@ -1,0 +1,4 @@
+373c373
+< 	if (!defined(@val)) {
+---
+> 	if (!@val) {

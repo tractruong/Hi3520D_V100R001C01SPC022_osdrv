@@ -1,4 +1,3 @@
-
 ##########################################################################################
 #	prepare param
 ##########################################################################################
@@ -182,6 +181,7 @@ hikernel:
 	rm $(OSDRV_DIR)/kernel/linux-3.0.y -rf
 	tar xzf $(OSDRV_DIR)/kernel/linux-3.0.y.tgz -C $(OSDRV_DIR)/kernel/
 	find $(OSDRV_DIR)/kernel/linux-3.0.y | xargs touch
+	patch -p1 $(OSDRV_DIR)/kernel/linux-3.0.y/kernel/timeconst.pl < $(OSDRV_DIR)/kernel/fix_perl_script_issue.patch
 	make -C $(OSDRV_DIR)/kernel/linux-3.0.y ARCH=arm CROSS_COMPILE=$(OSDRV_CROSS)- $(CHIP_KERNEL_CFG)
 	pushd $(OSDRV_DIR)/kernel/linux-3.0.y;make ARCH=arm CROSS_COMPILE=$(OSDRV_CROSS)- -j 20 >/dev/null;popd
 	pushd $(OSDRV_DIR)/kernel/linux-3.0.y;make ARCH=arm CROSS_COMPILE=$(OSDRV_CROSS)- uImage -j 20 >/dev/null;popd
@@ -219,6 +219,7 @@ hibusybox:
 	tar xzf $(OSDRV_DIR)/busybox/busybox-1.16.1.tgz -C $(OSDRV_DIR)/busybox
 	find $(OSDRV_DIR)/busybox/busybox-1.16.1 | xargs touch
 	cp $(OSDRV_DIR)/busybox/busybox-1.16.1/$(BUSYBOX_CFG) $(OSDRV_DIR)/busybox/busybox-1.16.1/.config
+	patch -p1 $(OSDRV_DIR)/busybox/busybox-1.16.1/Makefile < $(OSDRV_DIR)/busybox/fix_busybox_makefile.patch
 	pushd $(OSDRV_DIR)/busybox/busybox-1.16.1/;make -j 20 >/dev/null;popd
 	make -C $(OSDRV_DIR)/busybox/busybox-1.16.1 install
 	cp -af $(OSDRV_DIR)/busybox/busybox-1.16.1/_install/* $(OSDRV_DIR)/pub/$(PUB_ROOTFS)
